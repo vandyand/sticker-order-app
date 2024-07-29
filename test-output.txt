@@ -1,4 +1,0 @@
-
-> sticker-order-app@1.0.0 test
-> jest
-
