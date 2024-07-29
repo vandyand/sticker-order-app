@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const customerRoutes = require("./routes/customers");
@@ -8,8 +9,19 @@ const orderRoutes = require("./routes/orders");
 app.use(cors());
 app.use(express.json()); // Middleware to parse JSON request bodies
 
-app.use("/customers", customerRoutes);
+// Serve static files from the "uploads" directory with correct MIME type
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".svg")) {
+        res.setHeader("Content-Type", "image/svg+xml");
+      }
+    },
+  })
+);
 
+app.use("/customers", customerRoutes);
 app.use("/orders", orderRoutes);
 
 app.get("/", (req, res) => {

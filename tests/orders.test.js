@@ -12,7 +12,7 @@ describe("Order Endpoints", () => {
       .field("width", 3.0)
       .field("height", 2.0)
       .field("notes", "Urgent order")
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_0.svg"));
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id");
@@ -40,7 +40,7 @@ describe("Order Endpoints", () => {
       .field("width", 3.0)
       .field("height", 2.0)
       .field("notes", "Urgent order")
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_1.svg"));
 
     const orderId = createResponse.body.id;
 
@@ -66,7 +66,7 @@ describe("Order Endpoints", () => {
       .field("width", 3.0)
       .field("height", 2.0)
       .field("notes", "Urgent order")
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_2.svg"));
 
     const orderId = createResponse.body.id;
 
@@ -80,7 +80,7 @@ describe("Order Endpoints", () => {
       .field("notes", "Updated order")
       .field("paid", true)
       .field("processed", true)
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_3.svg"));
 
     expect(updateResponse.statusCode).toBe(200);
     expect(updateResponse.body).toHaveProperty("id", orderId);
@@ -103,7 +103,7 @@ describe("Order Endpoints", () => {
       .field("width", 3.0)
       .field("height", 2.0)
       .field("notes", "Urgent order")
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_4.svg"));
 
     const orderId = createResponse.body.id;
 
@@ -135,7 +135,7 @@ describe("Order Endpoints", () => {
       .field("width", 3.0)
       .field("height", 2.0)
       .field("notes", "Urgent order")
-      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
+      .attach("design_file", path.resolve(__dirname, "resources/svg_5.svg"));
 
     // Retrieve the orders by customer id
     const response = await request(app).get(`/orders/customer/1`);

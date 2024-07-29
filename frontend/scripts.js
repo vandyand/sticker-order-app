@@ -129,9 +129,30 @@ async function loadOrders() {
 
   if (response.ok) {
     const orders = await response.json();
-    orders.forEach((order) => {
+    orders.forEach(async (order) => {
       const li = document.createElement("li");
-      li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
+      li.innerHTML = `
+          ID: ${order.id}, 
+          Customer ID: ${order.customer_id}, 
+          Quantity: ${order.quantity}, 
+          Width: ${order.width}, 
+          Height: ${order.height},  
+          Notes: ${order.notes}
+        `;
+
+      // Fetch the design file content
+      const designFileResponse = await fetch(
+        `http://localhost:3000/uploads/${order.design_file}`
+      );
+      if (designFileResponse.ok) {
+        const designFileContent = await designFileResponse.text();
+        const designFileDiv = document.createElement("div");
+        designFileDiv.innerHTML = designFileContent;
+        li.appendChild(designFileDiv);
+      } else {
+        // Do nothing on failure
+      }
+
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.className = "delete-button";
@@ -158,9 +179,30 @@ async function filterOrders() {
 
   if (response.ok) {
     const orders = await response.json();
-    orders.forEach((order) => {
+    orders.forEach(async (order) => {
       const li = document.createElement("li");
-      li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
+      li.innerHTML = `
+          ID: ${order.id}, 
+          Customer ID: ${order.customer_id}, 
+          Quantity: ${order.quantity}, 
+          Width: ${order.width}, 
+          Height: ${order.height},  
+          Notes: ${order.notes}
+        `;
+
+      // Fetch the design file content
+      const designFileResponse = await fetch(
+        `http://localhost:3000/uploads/${order.design_file}`
+      );
+      if (designFileResponse.ok) {
+        const designFileContent = await designFileResponse.text();
+        const designFileDiv = document.createElement("div");
+        designFileDiv.innerHTML = designFileContent;
+        li.appendChild(designFileDiv);
+      } else {
+        // Do nothing on failure
+      }
+
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
       deleteButton.className = "delete-button";
