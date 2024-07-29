@@ -54,3 +54,41 @@ document
       alert("Failed to create order.");
     }
   });
+
+document
+  .getElementById("load-customers")
+  .addEventListener("click", async function () {
+    const response = await fetch("http://localhost:3000/customers");
+
+    if (response.ok) {
+      const customers = await response.json();
+      const customersList = document.getElementById("customers-list");
+      customersList.innerHTML = "";
+      customers.forEach((customer) => {
+        const li = document.createElement("li");
+        li.textContent = `ID: ${customer.id}, Name: ${customer.name}, Email: ${customer.email}`;
+        customersList.appendChild(li);
+      });
+    } else {
+      alert("Failed to load customers.");
+    }
+  });
+
+document
+  .getElementById("load-orders")
+  .addEventListener("click", async function () {
+    const response = await fetch("http://localhost:3000/orders");
+
+    if (response.ok) {
+      const orders = await response.json();
+      const ordersList = document.getElementById("orders-list");
+      ordersList.innerHTML = "";
+      orders.forEach((order) => {
+        const li = document.createElement("li");
+        li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
+        ordersList.appendChild(li);
+      });
+    } else {
+      alert("Failed to load orders.");
+    }
+  });
