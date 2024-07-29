@@ -49,20 +49,26 @@
       <div class="modal-content">
         <span class="close" id="close-order-modal">&times;</span>
         <h2>Create Order</h2>
-        <form id="order-form">
+        <form id="order-form" enctype="multipart/form-data">
           <label for="customer-id">Customer ID:</label>
-          <input type="number" id="customer-id" name="customer_id" required />
+          <input type="text" id="customer-id" name="customer_id" required />
+
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" name="quantity" required />
+
           <label for="width">Width:</label>
-          <input type="number" id="width" name="width" step="0.01" required />
+          <input type="number" id="width" name="width" required />
+
           <label for="height">Height:</label>
-          <input type="number" id="height" name="height" step="0.01" required />
+          <input type="number" id="height" name="height" required />
+
           <label for="design-file">Design File:</label>
-          <input type="text" id="design-file" name="design_file" required />
+          <input type="file" id="design-file" name="design_file" required />
+
           <label for="notes">Notes:</label>
           <textarea id="notes" name="notes"></textarea>
-          <button type="submit">Create Order</button>
+
+          <button type="submit">Submit Order</button>
         </form>
       </div>
     </div>

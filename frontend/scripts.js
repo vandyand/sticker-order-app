@@ -28,26 +28,23 @@ document
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const customer_id = document.getElementById("customer-id").value;
-    const quantity = document.getElementById("quantity").value;
-    const width = document.getElementById("width").value;
-    const height = document.getElementById("height").value;
-    const design_file = document.getElementById("design-file").value;
-    const notes = document.getElementById("notes").value;
+    const formData = new FormData();
+    formData.append(
+      "customer_id",
+      document.getElementById("customer-id").value
+    );
+    formData.append("quantity", document.getElementById("quantity").value);
+    formData.append("width", document.getElementById("width").value);
+    formData.append("height", document.getElementById("height").value);
+    formData.append(
+      "design_file",
+      document.getElementById("design-file").files[0]
+    );
+    formData.append("notes", document.getElementById("notes").value);
 
     const response = await fetch("http://localhost:3000/orders", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        customer_id,
-        quantity,
-        width,
-        height,
-        design_file,
-        notes,
-      }),
+      body: formData,
     });
 
     if (response.ok) {

@@ -4,9 +4,14 @@ const router = express.Router();
 
 const pool = require("../db");
 
-// POST /orders - Create a new order
-router.post("/", async (req, res) => {
-  const { customer_id, quantity, width, height, design_file, notes } = req.body;
+const multer = require("multer");
+
+const upload = multer({ dest: "uploads/" });
+
+// POST /orders - Create a new order with file upload
+router.post("/", upload.single("design_file"), async (req, res) => {
+  const { customer_id, quantity, width, height, notes } = req.body;
+  const design_file = req.file.path;
 
   try {
     const result = await pool.query(
@@ -69,22 +74,15 @@ router.get("/customer/:customer_id", async (req, res) => {
 });
 
 // PUT /orders/:id - Update order by id
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single("design_file"), async (req, res) => {
   const { id } = req.params;
-  const {
-    customer_id,
-    quantity,
-    width,
-    height,
-    design_file,
-    notes,
-    paid,
-    processed,
-  } = req.body;
+  const { customer_id, quantity, width, height, notes, paid, processed } =
+    req.body;
+  const design_file = req.file ? req.file.path : null;
 
   try {
     const result = await pool.query(
-      "UPDATE orders SET customer_id = $1, quantity = $2, width = $3, height = $4, design_file = $5, notes = $6, paid = $7, processed = $8 WHERE id = $9 RETURNING *",
+      "UPDATE orders SET customer_id = $1, quantity = $2, width = $3, height = $4, design_file = COALESCE($5, design_file), notes = $6, paid = $7, processed = $8 WHERE id = $9 RETURNING *",
       [
         customer_id,
         quantity,

@@ -1,17 +1,18 @@
 const request = require("supertest");
 
 const app = require("../index"); // Adjust this if necessary
+const path = require("path");
 
 describe("Order Endpoints", () => {
   it("should create a new order", async () => {
-    const response = await request(app).post("/orders").send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 5,
-      width: 3.0,
-      height: 2.0,
-      design_file: "path/to/design.svg",
-      notes: "Urgent order",
-    });
+    const response = await request(app)
+      .post("/orders")
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 5)
+      .field("width", 3.0)
+      .field("height", 2.0)
+      .field("notes", "Urgent order")
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id");
@@ -19,7 +20,7 @@ describe("Order Endpoints", () => {
     expect(response.body).toHaveProperty("quantity", 5);
     expect(response.body).toHaveProperty("width", 3.0);
     expect(response.body).toHaveProperty("height", 2.0);
-    expect(response.body).toHaveProperty("design_file", "path/to/design.svg");
+    expect(response.body).toHaveProperty("design_file");
     expect(response.body).toHaveProperty("notes", "Urgent order");
   });
 
@@ -32,14 +33,14 @@ describe("Order Endpoints", () => {
 
   it("should retrieve an order by id", async () => {
     // First, create a new order
-    const createResponse = await request(app).post("/orders").send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 5,
-      width: 3.0,
-      height: 2.0,
-      design_file: "path/to/design.svg",
-      notes: "Urgent order",
-    });
+    const createResponse = await request(app)
+      .post("/orders")
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 5)
+      .field("width", 3.0)
+      .field("height", 2.0)
+      .field("notes", "Urgent order")
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     const orderId = createResponse.body.id;
 
@@ -52,34 +53,34 @@ describe("Order Endpoints", () => {
     expect(response.body).toHaveProperty("quantity", 5);
     expect(response.body).toHaveProperty("width", 3.0);
     expect(response.body).toHaveProperty("height", 2.0);
-    expect(response.body).toHaveProperty("design_file", "path/to/design.svg");
+    expect(response.body).toHaveProperty("design_file");
     expect(response.body).toHaveProperty("notes", "Urgent order");
   });
 
   it("should update an order by id", async () => {
     // First, create a new order
-    const createResponse = await request(app).post("/orders").send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 5,
-      width: 3.0,
-      height: 2.0,
-      design_file: "path/to/design.svg",
-      notes: "Urgent order",
-    });
+    const createResponse = await request(app)
+      .post("/orders")
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 5)
+      .field("width", 3.0)
+      .field("height", 2.0)
+      .field("notes", "Urgent order")
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     const orderId = createResponse.body.id;
 
     // Update the order by id
-    const updateResponse = await request(app).put(`/orders/${orderId}`).send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 10,
-      width: 4.0,
-      height: 3.0,
-      design_file: "path/to/updated_design.svg",
-      notes: "Updated order",
-      paid: true,
-      processed: true,
-    });
+    const updateResponse = await request(app)
+      .put(`/orders/${orderId}`)
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 10)
+      .field("width", 4.0)
+      .field("height", 3.0)
+      .field("notes", "Updated order")
+      .field("paid", true)
+      .field("processed", true)
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     expect(updateResponse.statusCode).toBe(200);
     expect(updateResponse.body).toHaveProperty("id", orderId);
@@ -87,10 +88,7 @@ describe("Order Endpoints", () => {
     expect(updateResponse.body).toHaveProperty("quantity", 10);
     expect(updateResponse.body).toHaveProperty("width", 4.0);
     expect(updateResponse.body).toHaveProperty("height", 3.0);
-    expect(updateResponse.body).toHaveProperty(
-      "design_file",
-      "path/to/updated_design.svg"
-    );
+    expect(updateResponse.body).toHaveProperty("design_file");
     expect(updateResponse.body).toHaveProperty("notes", "Updated order");
     expect(updateResponse.body).toHaveProperty("paid", true);
     expect(updateResponse.body).toHaveProperty("processed", true);
@@ -98,14 +96,14 @@ describe("Order Endpoints", () => {
 
   it("should delete an order by id", async () => {
     // First, create a new order
-    const createResponse = await request(app).post("/orders").send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 5,
-      width: 3.0,
-      height: 2.0,
-      design_file: "path/to/design.svg",
-      notes: "Urgent order",
-    });
+    const createResponse = await request(app)
+      .post("/orders")
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 5)
+      .field("width", 3.0)
+      .field("height", 2.0)
+      .field("notes", "Urgent order")
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     const orderId = createResponse.body.id;
 
@@ -118,10 +116,7 @@ describe("Order Endpoints", () => {
     expect(deleteResponse.body).toHaveProperty("quantity", 5);
     expect(deleteResponse.body).toHaveProperty("width", 3.0);
     expect(deleteResponse.body).toHaveProperty("height", 2.0);
-    expect(deleteResponse.body).toHaveProperty(
-      "design_file",
-      "path/to/design.svg"
-    );
+    expect(deleteResponse.body).toHaveProperty("design_file");
     expect(deleteResponse.body).toHaveProperty("notes", "Urgent order");
 
     // Try to retrieve the deleted order
@@ -133,14 +128,14 @@ describe("Order Endpoints", () => {
 
   it("should retrieve orders by customer id", async () => {
     // First, create a new order
-    const createResponse = await request(app).post("/orders").send({
-      customer_id: 1, // Replace with valid customer_id if needed
-      quantity: 5,
-      width: 3.0,
-      height: 2.0,
-      design_file: "path/to/design.svg",
-      notes: "Urgent order",
-    });
+    const createResponse = await request(app)
+      .post("/orders")
+      .field("customer_id", 1) // Replace with valid customer_id if needed
+      .field("quantity", 5)
+      .field("width", 3.0)
+      .field("height", 2.0)
+      .field("notes", "Urgent order")
+      .attach("design_file", path.resolve(__dirname, "resources/demo.svg"));
 
     // Retrieve the orders by customer id
     const response = await request(app).get(`/orders/customer/1`);
