@@ -1,0 +1,36 @@
+{
+  "name": "sticker-order-app",
+  "version": "1.0.0",
+  "description": "## Project Overview **Description**: A web application for accepting and managing customer orders for custom stickers, leveraging low-cost suppliers. The application will allow users to submit sticker specifications, including size and design files, while managing orders easily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon index.js"
+  },
+  "author": "AVD",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-html-reporters": "^3.0.0",
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "./html-report",
+          "filename": "report.html",
+          "expand": true
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: sticker_db
+
+    ports:
+      - "5432:5432"
