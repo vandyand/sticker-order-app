@@ -7,12 +7,17 @@ const orderRoutes = require("./routes/orders");
 app.use(express.json()); // Middleware to parse JSON request bodies
 
 app.use("/customers", customerRoutes);
+
 app.use("/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Sticker Order API!");
 });
 
-app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:" + PORT);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log("Server is running on http://localhost:" + PORT);
+  });
+}
+
+module.exports = app;
