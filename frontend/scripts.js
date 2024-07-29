@@ -17,6 +17,7 @@ document
     if (response.ok) {
       alert("Customer created successfully!");
       loadCustomers();
+      closeModal("customer-modal");
     } else {
       alert("Failed to create customer.");
     }
@@ -52,6 +53,7 @@ document
     if (response.ok) {
       alert("Order created successfully!");
       loadOrders();
+      closeModal("order-modal");
     } else {
       alert("Failed to create order.");
     }
@@ -66,6 +68,36 @@ document.getElementById("load-orders").addEventListener("click", loadOrders);
 document
   .getElementById("filter-orders")
   .addEventListener("click", filterOrders);
+
+document
+  .getElementById("open-customer-modal")
+  .addEventListener("click", function () {
+    openModal("customer-modal");
+  });
+
+document
+  .getElementById("open-order-modal")
+  .addEventListener("click", function () {
+    openModal("order-modal");
+  });
+
+document
+  .getElementById("close-customer-modal")
+  .addEventListener("click", function () {
+    closeModal("customer-modal");
+  });
+
+document
+  .getElementById("close-order-modal")
+  .addEventListener("click", function () {
+    closeModal("order-modal");
+  });
+
+window.addEventListener("click", function (event) {
+  if (event.target.classList.contains("modal")) {
+    closeModal(event.target.id);
+  }
+});
 
 async function loadCustomers() {
   const response = await fetch("http://localhost:3000/customers");
@@ -165,4 +197,12 @@ async function deleteOrder(id) {
   if (!response.ok) {
     alert("Failed to delete order.");
   }
+}
+
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = "block";
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = "none";
 }
