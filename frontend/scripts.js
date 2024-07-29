@@ -16,6 +16,7 @@ document
 
     if (response.ok) {
       alert("Customer created successfully!");
+      loadCustomers();
     } else {
       alert("Failed to create customer.");
     }
@@ -50,6 +51,7 @@ document
 
     if (response.ok) {
       alert("Order created successfully!");
+      loadOrders();
     } else {
       alert("Failed to create order.");
     }
@@ -57,38 +59,76 @@ document
 
 document
   .getElementById("load-customers")
-  .addEventListener("click", async function () {
-    const response = await fetch("http://localhost:3000/customers");
+  .addEventListener("click", loadCustomers);
 
-    if (response.ok) {
-      const customers = await response.json();
-      const customersList = document.getElementById("customers-list");
-      customersList.innerHTML = "";
-      customers.forEach((customer) => {
-        const li = document.createElement("li");
-        li.textContent = `ID: ${customer.id}, Name: ${customer.name}, Email: ${customer.email}`;
-        customersList.appendChild(li);
+document.getElementById("load-orders").addEventListener("click", loadOrders);
+
+async function loadCustomers() {
+  const response = await fetch("http://localhost:3000/customers");
+
+  if (response.ok) {
+    const customers = await response.json();
+    const customersList = document.getElementById("customers-list");
+    customersList.innerHTML = "";
+    customers.forEach((customer) => {
+      const li = document.createElement("li");
+      li.textContent = `ID: ${customer.id}, Name: ${customer.name}, Email: ${customer.email}`;
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className = "delete-button";
+      deleteButton.addEventListener("click", async () => {
+        await deleteCustomer(customer.id);
+        loadCustomers();
       });
-    } else {
-      alert("Failed to load customers.");
-    }
+      li.appendChild(deleteButton);
+      customersList.appendChild(li);
+    });
+  } else {
+    alert("Failed to load customers.");
+  }
+}
+
+async function loadOrders() {
+  const response = await fetch("http://localhost:3000/orders");
+
+  if (response.ok) {
+    const orders = await response.json();
+    const ordersList = document.getElementById("orders-list");
+    ordersList.innerHTML = "";
+    orders.forEach((order) => {
+      const li = document.createElement("li");
+      li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className = "delete-button";
+      deleteButton.addEventListener("click", async () => {
+        await deleteOrder(order.id);
+        loadOrders();
+      });
+      li.appendChild(deleteButton);
+      ordersList.appendChild(li);
+    });
+  } else {
+    alert("Failed to load orders.");
+  }
+}
+
+async function deleteCustomer(id) {
+  const response = await fetch(`http://localhost:3000/customers/${id}`, {
+    method: "DELETE",
   });
 
-document
-  .getElementById("load-orders")
-  .addEventListener("click", async function () {
-    const response = await fetch("http://localhost:3000/orders");
+  if (!response.ok) {
+    alert("Failed to delete customer.");
+  }
+}
 
-    if (response.ok) {
-      const orders = await response.json();
-      const ordersList = document.getElementById("orders-list");
-      ordersList.innerHTML = "";
-      orders.forEach((order) => {
-        const li = document.createElement("li");
-        li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
-        ordersList.appendChild(li);
-      });
-    } else {
-      alert("Failed to load orders.");
-    }
+async function deleteOrder(id) {
+  const response = await fetch(`http://localhost:3000/orders/${id}`, {
+    method: "DELETE",
   });
+
+  if (!response.ok) {
+    alert("Failed to delete order.");
+  }
+}

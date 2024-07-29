@@ -51,6 +51,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// GET /orders/customer/:customer_id - Retrieve orders by customer id
+router.get("/customer/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM orders WHERE customer_id = $1",
+      [customer_id]
+    );
+
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 // PUT /orders/:id - Update order by id
 router.put("/:id", async (req, res) => {
   const { id } = req.params;

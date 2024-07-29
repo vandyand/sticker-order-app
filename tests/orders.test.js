@@ -130,4 +130,24 @@ describe("Order Endpoints", () => {
     expect(retrieveResponse.statusCode).toBe(404);
     expect(retrieveResponse.text).toBe("Order not found");
   });
+
+  it("should retrieve orders by customer id", async () => {
+    // First, create a new order
+    const createResponse = await request(app).post("/orders").send({
+      customer_id: 1, // Replace with valid customer_id if needed
+      quantity: 5,
+      width: 3.0,
+      height: 2.0,
+      design_file: "path/to/design.svg",
+      notes: "Urgent order",
+    });
+
+    // Retrieve the orders by customer id
+    const response = await request(app).get(`/orders/customer/1`);
+
+    expect(response.statusCode).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body[0]).toHaveProperty("customer_id", 1);
+  });
 });
