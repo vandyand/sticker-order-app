@@ -19,7 +19,9 @@
     </form>
 
     <h2>Customers List</h2>
-    <button id="load-customers">Load Customers</button>
+    <div>
+      <button id="load-customers">Fetch All Customers</button>
+    </div>
     <ul id="customers-list"></ul>
 
     <h2>Create Order</h2>
@@ -40,7 +42,14 @@
     </form>
 
     <h2>Orders List</h2>
-    <button id="load-orders">Load Orders</button>
+    <div>
+      <button id="load-orders">Fetch All Orders</button>
+    </div>
+    <div id="filter-orders-container">
+      <button id="filter-orders">Fetch Filtered Orders</button>
+      <label for="filter-customer-id">Filter by Customer ID:</label>
+      <input type="number" id="filter-customer-id" />
+    </div>
     <ul id="orders-list"></ul>
 
     <script src="scripts.js"></script>

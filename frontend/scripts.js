@@ -63,6 +63,10 @@ document
 
 document.getElementById("load-orders").addEventListener("click", loadOrders);
 
+document
+  .getElementById("filter-orders")
+  .addEventListener("click", filterOrders);
+
 async function loadCustomers() {
   const response = await fetch("http://localhost:3000/customers");
 
@@ -89,12 +93,13 @@ async function loadCustomers() {
 }
 
 async function loadOrders() {
+  const ordersList = document.getElementById("orders-list");
+  ordersList.innerHTML = ""; // Clear the list
+
   const response = await fetch("http://localhost:3000/orders");
 
   if (response.ok) {
     const orders = await response.json();
-    const ordersList = document.getElementById("orders-list");
-    ordersList.innerHTML = "";
     orders.forEach((order) => {
       const li = document.createElement("li");
       li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
@@ -104,6 +109,35 @@ async function loadOrders() {
       deleteButton.addEventListener("click", async () => {
         await deleteOrder(order.id);
         loadOrders();
+      });
+      li.appendChild(deleteButton);
+      ordersList.appendChild(li);
+    });
+  } else {
+    alert("Failed to load orders.");
+  }
+}
+
+async function filterOrders() {
+  const customerId = document.getElementById("filter-customer-id").value;
+  const ordersList = document.getElementById("orders-list");
+  ordersList.innerHTML = ""; // Clear the list
+
+  const response = await fetch(
+    `http://localhost:3000/orders/customer/${customerId}`
+  );
+
+  if (response.ok) {
+    const orders = await response.json();
+    orders.forEach((order) => {
+      const li = document.createElement("li");
+      li.textContent = `ID: ${order.id}, Customer ID: ${order.customer_id}, Quantity: ${order.quantity}, Width: ${order.width}, Height: ${order.height}, Design File: ${order.design_file}, Notes: ${order.notes}`;
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.className = "delete-button";
+      deleteButton.addEventListener("click", async () => {
+        await deleteOrder(order.id);
+        filterOrders();
       });
       li.appendChild(deleteButton);
       ordersList.appendChild(li);

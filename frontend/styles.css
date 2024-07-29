@@ -64,3 +64,13 @@ li {
 .delete-button:hover {
   background-color: #c82333;
 }
+
+#filter-customer-id {
+  width: auto;
+  margin-right: 10px;
+}
+
+#filter-orders-container {
+  display: flex;
+  align-items: center;
+}
